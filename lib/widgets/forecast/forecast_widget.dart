@@ -22,7 +22,7 @@ class ForecastWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(50, 150, 50, 50),
+      margin: const EdgeInsets.fromLTRB(40, 150, 40, 50),
       decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage(getWeatherImage(forecast.weather.main)),
@@ -32,7 +32,7 @@ class ForecastWidget extends StatelessWidget {
         CustomText(text: forecast.weather.main, fontSize: 40),
         const Padding(padding: EdgeInsets.only(top: 10)),
         CustomText(text: forecast.weather.description, fontSize: 25),
-        const Padding(padding: EdgeInsets.only(top: 40)),
+        const Padding(padding: EdgeInsets.only(top: 50)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -63,7 +63,7 @@ class ForecastWidget extends StatelessWidget {
             CustomText(text: '最大${forecast.winds.gust}m/s', fontSize: 20),
           ],
         ),
-        const Padding(padding: EdgeInsets.only(top: 30)),
+        const Padding(padding: EdgeInsets.only(top: 20)),
       ]),
     );
   }
