@@ -15,7 +15,7 @@ class ForecastViewModel extends ChangeNotifier {
   void fetchForecasts() async {
     Location location = Location(latitude: 35.6895, longitude: 139.6917);
     String url =
-        'https://api.openweathermap.org/data/2.5/forecast?lat=35.6895&lon=139.6917&units=metric&appid=b4970909603bfd0c159084a6beed02f2&cnt=3';
+        'https://api.openweathermap.org/data/2.5/forecast?lat=35.6895&lon=139.6917&units=metric&appid=b4970909603bfd0c159084a6beed02f2&cnt=20';
     forecasts = await forecastService.getForecasts(location, url);
     notifyListeners();
   }

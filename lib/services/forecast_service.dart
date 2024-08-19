@@ -8,8 +8,6 @@ import 'package:weather_searcher/models/weather_info.dart';
 import 'package:weather_searcher/models/winds.dart';
 
 class ForecastService {
-  final String apiKey = 'b4970909603bfd0c159084a6beed02f2';
-
   Future<List<Forecast>> getForecasts(Location location, String url) async {
     try {
       final response = await http.get(Uri.parse(url));
@@ -39,9 +37,7 @@ class ForecastService {
           pressure: weatherInfoJson['pressure'],
           humidity: weatherInfoJson['humidity']);
       Weather targetWeather = Weather(
-          main: weatherJson['main'],
-          description: weatherJson['description'],
-          icon: weatherJson['icon']);
+          main: weatherJson['main'], description: weatherJson['description']);
       Winds winds = Winds(
           speed: (windsJson['speed'] as num).toDouble(),
           gust: (windsJson['gust'] as num).toDouble());
