@@ -9,11 +9,13 @@ class ForecastWidget extends StatelessWidget {
   String getWeatherImage(String weatherName) {
     switch (weatherName) {
       case 'Sunny':
-        return 'images/sunny.png';
+        return 'images/sunny.gif';
       case 'Clouds':
-        return 'images/cloudy.png';
+        return 'images/cloudy.gif';
       case 'Rain':
-        return 'images/rainy.png';
+        return 'images/rainy.gif';
+      case 'Clear':
+        return 'images/.gif';
       default:
         return '';
     }
@@ -29,38 +31,38 @@ class ForecastWidget extends StatelessWidget {
               fit: BoxFit.cover)),
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         const Padding(padding: EdgeInsets.only(top: 20)),
-        CustomText(text: forecast.weather.main, fontSize: 40),
+        CustomText(weatherName: forecast.weather.main, text: forecast.weather.main, fontSize: 40, weight: FontWeight.w900,),
         const Padding(padding: EdgeInsets.only(top: 10)),
-        CustomText(text: forecast.weather.description, fontSize: 25),
+        CustomText(weatherName: forecast.weather.main, text: forecast.weather.description, fontSize: 25, weight: FontWeight.w800,),
         const Padding(padding: EdgeInsets.only(top: 50)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomText(
-                text: '最高${forecast.weatherInfo.tempMax}℃', fontSize: 20),
+            CustomText(weatherName: forecast.weather.main,
+                text: '最高${forecast.weatherInfo.tempMax}℃', fontSize: 20, weight: FontWeight.bold),
             const Padding(padding: EdgeInsets.only(left: 20)),
-            CustomText(
-                text: '最低${forecast.weatherInfo.tempMin}℃', fontSize: 20),
+            CustomText(weatherName: forecast.weather.main,
+                text: '最低${forecast.weatherInfo.tempMin}℃', fontSize: 20, weight: FontWeight.bold,),
           ],
         ),
         const Padding(padding: EdgeInsets.only(top: 30)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomText(
-                text: '気圧${forecast.weatherInfo.pressure}Pa', fontSize: 20),
+            CustomText(weatherName: forecast.weather.main,
+                text: '気圧${forecast.weatherInfo.pressure}Pa', fontSize: 20, weight: FontWeight.bold,),
             const Padding(padding: EdgeInsets.only(left: 20)),
-            CustomText(
-                text: '湿度${forecast.weatherInfo.humidity}%', fontSize: 20),
+            CustomText(weatherName: forecast.weather.main,
+                text: '湿度${forecast.weatherInfo.humidity}%', fontSize: 20, weight: FontWeight.bold,),
           ],
         ),
         const Padding(padding: EdgeInsets.only(top: 30)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomText(text: '風速${forecast.winds.speed}m/s', fontSize: 20),
+            CustomText(weatherName: forecast.weather.main, text: '風速${forecast.winds.speed}m/s', fontSize: 20, weight: FontWeight.bold,),
             const Padding(padding: EdgeInsets.only(left: 20)),
-            CustomText(text: '最大${forecast.winds.gust}m/s', fontSize: 20),
+            CustomText(weatherName: forecast.weather.main, text: '最大${forecast.winds.gust}m/s', fontSize: 20, weight: FontWeight.bold,),
           ],
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
