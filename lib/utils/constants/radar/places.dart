@@ -11,6 +11,6 @@ const Map<String, String> textPlaces = {
 };
 
 const Map<String, String> urlPlaces = {
-  'moeHouse': 'https://openweathermap.org/weathermap?basemap=map&cities=false&layer=radar&lat=35.7030&lon=139.6404&zoom=10',
   'myHouse': 'https://openweathermap.org/weathermap?basemap=map&cities=false&layer=radar&lat=35.7030&lon=139.6404&zoom=10',
+  'moeHouse': 'https://openweathermap.org/weathermap?basemap=map&cities=false&layer=clouds&lat=36.0569&lon=139.4687&zoom=10',
 };

@@ -40,7 +40,7 @@ class ButtonState extends StatelessWidget {
               child: Center(
                   child: RadarWidget(
                       url:
-                          'https://openweathermap.org/weathermap?basemap=map&cities=false&layer=radar&lat${currentLocation!.latitude}&lon=${currentLocation!.longitude}&zoom=10'))),
+                          'https://openweathermap.org/weathermap?basemap=map&cities=false&layer=radar&lat=${currentLocation!.latitude}&lon=${currentLocation!.longitude}&zoom=10'))),
         if (controller.text == 'myHouse')
           Expanded(
               child: Center(
