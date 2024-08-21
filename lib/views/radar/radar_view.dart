@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:weather_searcher/models/location.dart';
+import 'package:weather_searcher/view_models/location_service.dart';
 import 'package:weather_searcher/widgets/app_bar/custom_app_bar.dart';
 import 'package:weather_searcher/widgets/bottoms/button_state.dart';
 import '../../utils/constants/radar/radar.dart' as radar;
@@ -9,24 +11,61 @@ class RadarView extends StatelessWidget {
 
   final TextEditingController placeController =
       TextEditingController(text: 'here');
+  final LocationService locationService = LocationService();
 
   String getImage(String place) {
     return radar_map.imagePlaces[place]!;
+  }
+
+  Future<Location> getCurrentLocation() async {
+    return await locationService.getCurrentLocation();
   }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: placeController,
-      builder:(context, value, child) => Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(getImage(placeController.text)),
-                fit: BoxFit.cover)),
-        child: Scaffold(
-          appBar: const CustomAppBar(title: radar.appBarTitle, barColor: Colors.blue),
-          backgroundColor: Colors.white.withOpacity(0),
-          body: ButtonState(controller: placeController, map: radar_map.textPlaces, buttonColor: Colors.blue[200]!),
-        )));
+      builder: (context, value, child) {
+        return FutureBuilder<Location>(
+          future: getCurrentLocation(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return const Center(child: Text('エラーが発生しました'));
+            } else if (snapshot.hasData) {
+              Location currentLocation = snapshot.data!;
+              print(currentLocation.latitude);
+              print(currentLocation.longitude);
+
+              return Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(getImage(placeController.text)),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Scaffold(
+                  appBar: const CustomAppBar(
+                    title: radar.appBarTitle,
+                    barColor: Colors.blue,
+                  ),
+                  backgroundColor: Colors.white.withOpacity(0),
+                  body: ButtonState(
+                    currentLocation: currentLocation,
+                    controller: placeController,
+                    map: radar_map.textPlaces,
+                    buttonColor: Colors.blue[200]!,
+                  ),
+                ),
+              );
+            } else {
+              // データがない場合の処理（通常はここには到達しない）
+              return const Center(child: Text('データがありません'));
+            }
+          },
+        );
+      },
+    );
   }
 }

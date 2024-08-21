@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:weather_searcher/models/forecast.dart';
+import 'package:weather_searcher/models/location.dart';
 import 'package:weather_searcher/widgets/forecast/forecast_widget.dart';
 import 'package:weather_searcher/widgets/radar/radar_widget.dart';
 import '../../utils/constants/radar/places.dart' as radar_map;
 
 class ButtonState extends StatelessWidget {
   final List<Forecast>? forecasts;
+  final Location? currentLocation;
   final TextEditingController controller;
   final Map<String, String> map;
   final Color buttonColor;
   const ButtonState(
       {super.key,
       this.forecasts,
+      this.currentLocation,
       required this.controller,
       required this.map,
       required this.buttonColor});
@@ -32,6 +35,12 @@ class ButtonState extends StatelessWidget {
           Expanded(
             child: Center(child: ForecastWidget(forecast: forecasts![19])),
           ),
+        if (controller.text == 'here')
+          Expanded(
+              child: Center(
+                  child: RadarWidget(
+                      url:
+                          'https://openweathermap.org/weathermap?basemap=map&cities=false&layer=radar&lat${currentLocation!.latitude}&lon=${currentLocation!.longitude}&zoom=10'))),
         if (controller.text == 'myHouse')
           Expanded(
               child: Center(
