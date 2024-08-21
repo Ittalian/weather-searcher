@@ -9,3 +9,8 @@ const Map<String, String> textPlaces = {
   'myHouse': '自宅',
   'moeHouse': 'もえの家'
 };
+
+const Map<String, String> urlPlaces = {
+  'moeHouse': 'https://openweathermap.org/weathermap?basemap=map&cities=false&layer=radar&lat=35.7030&lon=139.6404&zoom=10',
+  'myHouse': 'https://openweathermap.org/weathermap?basemap=map&cities=false&layer=radar&lat=35.7030&lon=139.6404&zoom=10',
+};
