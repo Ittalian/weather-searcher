@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_searcher/models/location.dart';
 import 'package:weather_searcher/view_models/location_service.dart';
 import 'package:weather_searcher/widgets/app_bar/custom_app_bar.dart';
-import 'package:weather_searcher/widgets/bottoms/button_state.dart';
+import 'package:weather_searcher/widgets/bottoms/radar_button_state.dart';
 import '../../utils/constants/radar/radar.dart' as radar;
 import '../../utils/constants/radar/places.dart' as radar_map;
 
@@ -35,8 +35,6 @@ class RadarView extends StatelessWidget {
               return const Center(child: Text('エラーが発生しました'));
             } else if (snapshot.hasData) {
               Location currentLocation = snapshot.data!;
-              print(currentLocation.latitude);
-              print(currentLocation.longitude);
 
               return Container(
                 decoration: BoxDecoration(
@@ -51,7 +49,7 @@ class RadarView extends StatelessWidget {
                     barColor: Colors.blue,
                   ),
                   backgroundColor: Colors.white.withOpacity(0),
-                  body: ButtonState(
+                  body: RadarButtonState(
                     currentLocation: currentLocation,
                     controller: placeController,
                     map: radar_map.textPlaces,
@@ -60,7 +58,6 @@ class RadarView extends StatelessWidget {
                 ),
               );
             } else {
-              // データがない場合の処理（通常はここには到達しない）
               return const Center(child: Text('データがありません'));
             }
           },
