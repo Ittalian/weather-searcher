@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:weather_searcher/models/forecast.dart';
-import 'package:weather_searcher/widgets/bottoms/slider/custom_slider.dart';
 import 'package:weather_searcher/widgets/forecast/custom_text.dart';
 
 class ForecastWidget extends StatelessWidget {
