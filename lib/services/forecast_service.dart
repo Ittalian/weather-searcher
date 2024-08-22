@@ -32,8 +32,8 @@ class ForecastService {
       final weatherJson = weather['weather'][0];
       final windsJson = weather['wind'];
       WeatherInfo weatherInfo = WeatherInfo(
-          tempMin: weatherInfoJson['temp_min'],
-          tempMax: weatherInfoJson['temp_max'],
+          tempMin: (weatherInfoJson['temp_min'] as num).toDouble(),
+          tempMax: (weatherInfoJson['temp_max'] as num).toDouble(),
           pressure: weatherInfoJson['pressure'],
           humidity: weatherInfoJson['humidity']);
       Weather targetWeather = Weather(
