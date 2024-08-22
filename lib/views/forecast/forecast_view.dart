@@ -11,6 +11,7 @@ class ForecastView extends StatelessWidget {
 
   final TextEditingController dateController =
       TextEditingController(text: 'today');
+  final TextEditingController timeController = TextEditingController(text: '0');
 
   String getImage(String date) {
     return forecast_map.imagesDates[date]!;
@@ -22,20 +23,23 @@ class ForecastView extends StatelessWidget {
 
     return ValueListenableBuilder(
         valueListenable: dateController,
-        builder: (context, value, child) => Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(getImage(dateController.text)),
-                    fit: BoxFit.cover)),
-            child: Scaffold(
-              appBar: const CustomAppBar(
-                  title: forecast.appBarTitle, barColor: Colors.yellow),
-              backgroundColor: Colors.white.withOpacity(0),
-              body: ButtonState(
-                  forecasts: forecastViewModel.forecasts,
-                  controller: dateController,
-                  map: forecast_map.textDates,
-                  buttonColor: Colors.yellow[200]!),
-            )));
+        builder: (context, value, child) => ValueListenableBuilder(
+            valueListenable: timeController,
+            builder: (context, value, child) => Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(getImage(dateController.text)),
+                        fit: BoxFit.cover)),
+                child: Scaffold(
+                  appBar: const CustomAppBar(
+                      title: forecast.appBarTitle, barColor: Colors.yellow),
+                  backgroundColor: Colors.white.withOpacity(0),
+                  body: ButtonState(
+                      forecasts: forecastViewModel.forecasts,
+                      controller: dateController,
+                      timeController: timeController,
+                      map: forecast_map.textDates,
+                      buttonColor: Colors.yellow[200]!),
+                ))));
   }
 }
