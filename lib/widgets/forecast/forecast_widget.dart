@@ -25,7 +25,7 @@ class ForecastWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
-        margin: const EdgeInsets.fromLTRB(40, 99, 40, 50),
+        margin: const EdgeInsets.fromLTRB(40, 120, 40, 50),
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage(getWeatherImage(forecast.weather.main)),
