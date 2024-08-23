@@ -15,7 +15,7 @@ class ForecastWidget extends StatelessWidget {
       case 'Rain':
         return 'images/rainy.gif';
       case 'Clear':
-        return 'images/.gif';
+        return 'images/clear.gif';
       default:
         return '';
     }
@@ -25,7 +25,7 @@ class ForecastWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
-        margin: const EdgeInsets.fromLTRB(40, 70, 40, 50),
+        margin: const EdgeInsets.fromLTRB(40, 99, 40, 50),
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage(getWeatherImage(forecast.weather.main)),

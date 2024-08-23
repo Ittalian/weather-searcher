@@ -20,7 +20,6 @@ class ForecastService {
         throw Exception('天気を取得できませんでした');
       }
     } catch (e) {
-      print(e);
       throw Exception('天気を取得できませんでした');
     }
   }

@@ -9,13 +9,17 @@ class ButtonState extends StatelessWidget {
   final TextEditingController timeController;
   final Map<String, String> map;
   final Color buttonColor;
-  const ButtonState(
-      {super.key,
-      this.forecasts,
-      required this.controller,
-      required this.timeController,
-      required this.map,
-      required this.buttonColor});
+  final Color selectedButtonColor;
+
+  const ButtonState({
+    super.key,
+    this.forecasts,
+    required this.controller,
+    required this.timeController,
+    required this.map,
+    required this.buttonColor,
+    this.selectedButtonColor = Colors.yellowAccent,
+  });
 
   void setTime(dynamic value) {
     timeController.text = value.toString();
@@ -24,7 +28,40 @@ class ButtonState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return forecasts!.isEmpty
-        ? const Center(child: CircularProgressIndicator())
+        ? Stack(children: [
+            Container(
+                alignment: Alignment.bottomCenter,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: map.entries.map((entry) {
+                    bool isSelected = controller.text == entry.key;
+
+                    return Expanded(
+                        child: InkWell(
+                            onTap: () {
+                              controller.text = entry.key;
+                              timeController.text = '0';
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(),
+                                    color: isSelected
+                                        ? selectedButtonColor
+                                        : buttonColor),
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                child: Text(
+                                  entry.value,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ))));
+                  }).toList(),
+                )),
+            const Center(child: CircularProgressIndicator())
+          ])
         : Column(
             children: [
               if (controller.text == 'today')
@@ -32,7 +69,8 @@ class ButtonState extends StatelessWidget {
                   child: Center(
                       child: ForecastWidget(
                           forecast: forecasts![
-                              ((double.parse(timeController.text)) / 3).round() +
+                              ((double.parse(timeController.text)) / 3)
+                                      .round() +
                                   3])),
                 ),
               if (controller.text == 'tomorrow')
@@ -57,27 +95,33 @@ class ButtonState extends StatelessWidget {
                 hour: double.parse(timeController.text),
                 onChanged: (value) => setTime(value),
               ),
-              const Padding(padding: EdgeInsets.only(top: 50)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: map.entries
-                    .map((entry) => Expanded(
-                        child: InkWell(
-                            onTap: () {
-                              controller.text = entry.key;
-                              timeController.text = '0';
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(), color: buttonColor),
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                child: Text(
-                                  entry.value,
-                                  style: const TextStyle(fontSize: 20),
-                                  textAlign: TextAlign.center,
-                                )))))
-                    .toList(),
+                children: map.entries.map((entry) {
+                  bool isSelected = controller.text == entry.key;
+
+                  return Expanded(
+                      child: InkWell(
+                          onTap: () {
+                            controller.text = entry.key;
+                            timeController.text = '0';
+                          },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(),
+                                  color: isSelected
+                                      ? selectedButtonColor
+                                      : buttonColor),
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: Text(
+                                entry.value,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                                textAlign: TextAlign.center,
+                              ))));
+                }).toList(),
               ),
             ],
           );

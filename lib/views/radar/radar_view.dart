@@ -17,8 +17,12 @@ class RadarView extends StatelessWidget {
     return radar_map.imagePlaces[place]!;
   }
 
-  Future<Location> getCurrentLocation() async {
-    return await locationService.getCurrentLocation();
+  Future<Location?> getCurrentLocation() async {
+    try {
+      return await locationService.getCurrentLocation();
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
@@ -26,40 +30,56 @@ class RadarView extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: placeController,
       builder: (context, value, child) {
-        return FutureBuilder<Location>(
+        return FutureBuilder<Location?>(
           future: getCurrentLocation(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return const Center(child: Text('エラーが発生しました'));
-            } else if (snapshot.hasData) {
-              Location currentLocation = snapshot.data!;
+            Widget radarContent = const Center(child: Text('データがありません'));
 
-              return Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(getImage(placeController.text)),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Scaffold(
-                  appBar: const CustomAppBar(
-                    title: radar.appBarTitle,
-                    barColor: Colors.blue,
-                  ),
-                  backgroundColor: Colors.white.withOpacity(0),
-                  body: RadarButtonState(
-                    currentLocation: currentLocation,
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              radarContent = Stack(
+                children: [
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: RadarButtonState(
+                    currentLocation: null,
                     controller: placeController,
                     map: radar_map.textPlaces,
                     buttonColor: Colors.blue[200]!,
+                  )),
+                  const Center(
+                    child: CircularProgressIndicator(),
                   ),
-                ),
+                ],
               );
-            } else {
-              return const Center(child: Text('データがありません'));
+            } else if (snapshot.hasError) {
+              radarContent = const Center(child: Text('エラーが発生しました'));
+            } else if (snapshot.hasData && snapshot.data != null) {
+              Location currentLocation = snapshot.data!;
+
+              radarContent = RadarButtonState(
+                currentLocation: currentLocation,
+                controller: placeController,
+                map: radar_map.textPlaces,
+                buttonColor: Colors.blue[200]!,
+              );
             }
+
+            return Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(getImage(placeController.text)),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Scaffold(
+                appBar: const CustomAppBar(
+                  title: radar.appBarTitle,
+                  barColor: Colors.blue,
+                ),
+                backgroundColor: Colors.white.withOpacity(0),
+                body: radarContent,
+              ),
+            );
           },
         );
       },
