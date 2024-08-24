@@ -20,6 +20,7 @@ class ForecastService {
         throw Exception('天気を取得できませんでした');
       }
     } catch (e) {
+      print(e);
       throw Exception('天気を取得できませんでした');
     }
   }
@@ -30,11 +31,16 @@ class ForecastService {
       final weatherInfoJson = weather['main'];
       final weatherJson = weather['weather'][0];
       final windsJson = weather['wind'];
+      double rain = 0.0;
+      if (weatherJson['main'] == 'Rain') {
+        rain = ((weather['rain']['3h'] ?? 0.0) as num).toDouble();
+      }
       WeatherInfo weatherInfo = WeatherInfo(
           tempMin: (weatherInfoJson['temp_min'] as num).toDouble(),
           tempMax: (weatherInfoJson['temp_max'] as num).toDouble(),
           pressure: weatherInfoJson['pressure'],
-          humidity: weatherInfoJson['humidity']);
+          humidity: weatherInfoJson['humidity'],
+          rain: rain);
       Weather targetWeather = Weather(
           main: weatherJson['main'], description: weatherJson['description']);
       Winds winds = Winds(

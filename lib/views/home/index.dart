@@ -10,8 +10,8 @@ class Index extends StatelessWidget {
     return Scaffold(
       body: PageView(
         children: [
-          RadarView(),
           ForecastView(),
+          RadarView(),
         ],
       )
     );
