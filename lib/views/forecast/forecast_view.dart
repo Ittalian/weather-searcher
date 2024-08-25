@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_searcher/view_models/forecast_view_model.dart';
 import 'package:weather_searcher/widgets/app_bar/custom_app_bar.dart';
-import 'package:weather_searcher/widgets/bottoms/button_state.dart';
+import 'package:weather_searcher/widgets/bottoms/button/button_state.dart';
 import '../../utils/constants/forecast/forecast.dart' as forecast;
 import '../../utils/constants/forecast/dates.dart' as forecast_map;
 

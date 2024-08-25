@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_searcher/models/location.dart';
 import 'package:weather_searcher/view_models/location_service.dart';
 import 'package:weather_searcher/widgets/app_bar/custom_app_bar.dart';
-import 'package:weather_searcher/widgets/bottoms/radar_button_state.dart';
+import 'package:weather_searcher/widgets/bottoms/button/radar_button_state.dart';
 import '../../utils/constants/radar/radar.dart' as radar;
 import '../../utils/constants/radar/places.dart' as radar_map;
 

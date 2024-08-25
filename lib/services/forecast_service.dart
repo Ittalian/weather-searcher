@@ -1,14 +1,17 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather_searcher/models/forecast.dart';
 import 'package:weather_searcher/models/location.dart';
 import 'package:http/http.dart' as http;
 import 'package:weather_searcher/models/weather.dart';
 import 'dart:convert';
-
 import 'package:weather_searcher/models/weather_info.dart';
 import 'package:weather_searcher/models/winds.dart';
+import '../utils/constants/forecast/error.dart' as error_messages;
 
 class ForecastService {
-  Future<List<Forecast>> getForecasts(Location location, String url) async {
+  Future<List<Forecast>> getForecasts(Location location) async {
+    String url =
+        'https://api.openweathermap.org/data/2.5/forecast?lat=${location.latitude}&lon=${location.longitude}&units=metric&appid=${dotenv.get('appid')}&cnt=28';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -17,11 +20,10 @@ class ForecastService {
         List<Forecast> forecast = _getForecast(weatherList);
         return forecast;
       } else {
-        throw Exception('天気を取得できませんでした');
+        throw Exception(error_messages.weatherNotFoundErrorMesage);
       }
     } catch (e) {
-      print(e);
-      throw Exception('天気を取得できませんでした');
+      throw Exception(error_messages.weatherNotFoundErrorMesage);
     }
   }
 

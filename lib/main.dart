@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_searcher/models/forecast.dart';
@@ -9,7 +10,8 @@ import 'package:weather_searcher/view_models/location_service.dart';
 import 'package:weather_searcher/views/home/index.dart';
 import 'package:workmanager/workmanager.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: '.env');
   WidgetsFlutterBinding.ensureInitialized();
   Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
   initializeNotification();
@@ -61,18 +63,22 @@ Future<void> notify() async {
   LocationService locationService = LocationService();
 
   Location currentLocation = await locationService.getCurrentLocation();
-  String url =
-      'https://api.openweathermap.org/data/2.5/forecast?lat=${currentLocation.latitude}&lon=${currentLocation.longitude}&units=metric&appid=b4970909603bfd0c159084a6beed02f2&cnt=28';
   List<Forecast> forecastList =
-      await forecastService.getForecasts(currentLocation, url);
+      await forecastService.getForecasts(currentLocation);
 
-  for (var forecast in forecastList) {
-    final double rainVolume = forecast.weatherInfo.rain;
+  Map<String, double> rainVolumeMap = {};
+  for (var i = 0; i < forecastList.length; i++) {
+    final double rainVolume = forecastList[i].weatherInfo.rain;
     if (rainVolume > 2.0) {
-      await showNotification(
-          '雨予報', '今日は3時間で${rainVolume}mmの雨が降る予報です。傘を持っていってください。');
-      break;
+      rainVolumeMap.addAll({'${i * 3}h後': rainVolume});
     }
+  }
+  if (rainVolumeMap.isNotEmpty) {
+    String forecastMessage = '';
+    rainVolumeMap.forEach((key, value) {
+      forecastMessage += '$keyに${value}mm ';
+    });
+    await showNotification('雨予報', '$forecastMessage雨が降る予報です。傘を持っていってください。');
   }
 }
 
@@ -89,17 +95,9 @@ void initializeWorkManager() {
     return Future.value(true);
   });
 
-  Workmanager().registerPeriodicTask(
+  Workmanager().registerOneOffTask(
     'dailyWeatherCheck',
     'dailyWeatherCheckTask',
-    frequency: const Duration(hours: 24),
-    initialDelay: calculateInitialDelay(),
-    constraints: Constraints(networkType: NetworkType.connected),
+    initialDelay: const Duration(seconds: 5),
   );
-}
-
-Duration calculateInitialDelay() {
-  final now = DateTime.now();
-  final nextMidnight = DateTime(now.year, now.month, now.day, 0, 0, 10);
-  return nextMidnight.difference(now);
 }

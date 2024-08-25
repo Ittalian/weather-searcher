@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_searcher/models/forecast.dart';
 import 'package:weather_searcher/widgets/bottoms/slider/custom_slider.dart';
 import 'package:weather_searcher/widgets/forecast/forecast_widget.dart';
+import '../../../utils/constants/forecast/button.dart' as buttons;
 
 class ButtonState extends StatelessWidget {
   final List<Forecast>? forecasts;
@@ -64,7 +65,7 @@ class ButtonState extends StatelessWidget {
           ])
         : Column(
             children: [
-              if (controller.text == 'today')
+              if (controller.text == buttons.buttons['today'])
                 Expanded(
                   child: Center(
                       child: ForecastWidget(
@@ -73,7 +74,7 @@ class ButtonState extends StatelessWidget {
                                       .round() +
                                   3])),
                 ),
-              if (controller.text == 'tomorrow')
+              if (controller.text == buttons.buttons['tomorrow'])
                 Expanded(
                   child: Center(
                       child: ForecastWidget(
@@ -82,7 +83,7 @@ class ButtonState extends StatelessWidget {
                                       .round() +
                                   11])),
                 ),
-              if (controller.text == 'dayAfterTomorrow')
+              if (controller.text == buttons.buttons['dayAfterTomorrow'])
                 Expanded(
                   child: Center(
                       child: ForecastWidget(
